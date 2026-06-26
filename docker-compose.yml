@@ -1,29 +1,13 @@
 services:
-  app:
+  civicflow:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "4173:4173"
     healthcheck:
-      # wget is available in alpine; curl is not installed by default
-      test: ["CMD-SHELL", "wget -qO- http://localhost:4173 || exit 1"]
+      test: ["CMD-SHELL", "curl -sf http://localhost:4173 || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 10
-      start_period: 10s
-
-  playwright:
-    build:
-      context: .
-      dockerfile: Dockerfile.playwright
-    depends_on:
-      app:
-        condition: service_healthy
-    environment:
-      # Overrides baseURL in playwright.config.ts — points at the app service
-      BASE_URL: http://app:4173
-    volumes:
-      # Mount report and results back to the host so you can open them locally
-      - ./playwright-report:/app/playwright-report
-      - ./test-results:/app/test-results
+      start_period: 15s

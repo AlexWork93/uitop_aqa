@@ -8,6 +8,7 @@ RUN npm run build
 
 # ── Stage 2: serve ────────────────────────────────────────────────────────────
 FROM node:20-alpine
+RUN apk add --no-cache curl
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
