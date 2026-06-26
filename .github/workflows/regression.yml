@@ -1,15 +1,18 @@
 name: E2E Regression
 
+run-name: >-
+  ${{ github.event_name == 'pull_request'
+    && format('E2E Regression, {0}, {1}', github.head_ref, github.base_ref)
+    || format('Daily #{0}', github.run_number) }}
+
 permissions:
   contents: write
 
 on:
   pull_request:
-    branches: [master, main]
+    branches: [main, master]
   schedule:
-    # 08:00 Kyiv time — UTC+2 (winter) / UTC+3 (summer). Using 06:00 UTC as a year-round fit.
     - cron: '0 6 * * *'
-  workflow_dispatch:
 
 jobs:
   desktop:

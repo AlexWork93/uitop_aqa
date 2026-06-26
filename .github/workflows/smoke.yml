@@ -1,8 +1,10 @@
 name: Smoke
 
+run-name: "Smoke, ${{ github.head_ref }}, ${{ github.base_ref }}"
+
 on:
-  push:
-    branches: '**'
+  pull_request:
+    branches-ignore: [main, master]
 
 jobs:
   smoke:
