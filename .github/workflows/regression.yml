@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.60.0-noble
+      options: --user root
+    env:
+      HOME: /root
     timeout-minutes: 30
 
     strategy:
@@ -53,6 +56,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.60.0-noble
+      options: --user root
+    env:
+      HOME: /root
     timeout-minutes: 30
 
     strategy:
