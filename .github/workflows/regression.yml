@@ -2,7 +2,7 @@ name: E2E Regression
 
 run-name: >-
   ${{ github.event_name == 'pull_request'
-    && format('E2E Regression, {0}, {1}', github.head_ref, github.base_ref)
+    && format('E2E Regression, {0}, {1}', ' from ', github.head_ref, ' to ', github.base_ref)
     || format('Daily #{0}', github.run_number) }}
 
 permissions:

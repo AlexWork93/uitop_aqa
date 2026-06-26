@@ -1,6 +1,6 @@
 name: Smoke
 
-run-name: "Smoke, ${{ github.head_ref }}, ${{ github.base_ref }}"
+run-name: "Smoke, from ${{ github.head_ref }} to ${{ github.base_ref }}"
 
 on:
   pull_request:
