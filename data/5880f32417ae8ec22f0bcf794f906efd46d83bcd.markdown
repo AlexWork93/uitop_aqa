@@ -1,0 +1,35 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: e2e/projects.spec.ts >> Projects >> Projects Navigation >> seeded project cards are all visible
+- Location: playwright/tests/e2e/projects.spec.ts:16:5
+
+# Error details
+
+```
+Error: browserType.launch: Failed to launch the browser process.
+Browser logs:
+
+╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║ Firefox is unable to launch if the $HOME folder isn't owned by the current user.                                  ║
+║ Workaround: Set the HOME=/root environment variable in your GitHub Actions workflow file when running Playwright. ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+Call log:
+  - <launching> /ms-playwright/firefox-1522/firefox/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-b6JeU7 -juggler-pipe -silent
+  - <launched> pid=607
+  - [pid=607][err] [607] Sandbox: CanCreateUserNamespace() clone() failure: EPERM
+  - [pid=607][err] Running Nightly as root in a regular user's session is not supported.  ($HOME is /github/home which is owned by pwuser.)
+  - [pid=607] <process did exit: exitCode=1, signal=null>
+  - [pid=607] starting temporary directories cleanup
+  - [pid=607] <gracefully close start>
+  - [pid=607] <kill>
+  - [pid=607] <skipped force kill spawnedProcess.killed=false processClosed=true>
+  - [pid=607] finished temporary directories cleanup
+  - [pid=607] <gracefully close end>
+
+```
