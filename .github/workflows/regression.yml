@@ -1,5 +1,8 @@
 name: E2E Regression
 
+permissions:
+  contents: write
+
 on:
   pull_request:
     branches: [master, main]
@@ -37,13 +40,13 @@ jobs:
       - name: Run E2E tests — ${{ matrix.project }}
         run: npx playwright test --project=${{ matrix.project }}
 
-      - name: Upload report
+      - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: report-${{ matrix.project }}
-          path: playwright-report/
-          retention-days: 30
+          name: blob-${{ matrix.project }}
+          path: blob-report/
+          retention-days: 1
 
   mobile:
     name: Mobile — ${{ matrix.project }}
@@ -73,10 +76,41 @@ jobs:
       - name: Run E2E tests — ${{ matrix.project }}
         run: npx playwright test --project=${{ matrix.project }}
 
-      - name: Upload report
+      - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: report-${{ matrix.project }}
-          path: playwright-report/
-          retention-days: 30
+          name: blob-${{ matrix.project }}
+          path: blob-report/
+          retention-days: 1
+
+  # ── Publish ──────────────────────────────────────────────────────────────────
+  publish:
+    name: Merge reports and publish to GitHub Pages
+    needs: [desktop, mobile]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download all blob reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: blob-*
+          path: all-blobs
+          merge-multiple: true
+
+      - name: Merge into single HTML report
+        run: npx playwright merge-reports --reporter html ./all-blobs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: playwright-report
+          publish_branch: gh-pages

@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test } from '../../fixtures'
 import { LoginPage } from '../../pages/LoginPage'
 import { DashboardPage } from '../../pages/DashboardPage'
 import { credentials, loginErrors } from '../../test-data/constants'

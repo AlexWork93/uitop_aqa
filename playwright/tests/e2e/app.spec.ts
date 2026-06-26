@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test } from '../../fixtures'
 import { LoginPage } from '../../pages/LoginPage'
 import { clearLocalStorageOnLoad } from '../../utils/storage'
 
