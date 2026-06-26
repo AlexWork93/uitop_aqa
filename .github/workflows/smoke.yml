@@ -25,7 +25,7 @@ jobs:
         run: npm run build
 
       - name: Run smoke tests
-        run: npx playwright test --project=smoke --project=api
+        run: npx playwright test --project=chromium-desktop --project=api --grep @smoke
 
       - name: Upload report
         if: failure()

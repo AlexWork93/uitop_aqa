@@ -34,13 +34,6 @@ export default defineConfig({
         reuseExistingServer: !process.env.CI,
       },
   projects: [
-    // ── Smoke — fast sanity check, Chromium only ──────────────────────────────
-    {
-      name: 'smoke',
-      testMatch: /playwright\/tests\/e2e\/app\.spec\.ts/,
-      use: { ...devices['Desktop Chrome'] },
-    },
-
     // ── Desktop browsers ──────────────────────────────────────────────────────
     {
       name: 'chromium-desktop',

@@ -10,7 +10,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:docker": "cross-env BASE_URL=http://localhost:4173 playwright test",
-    "test:e2e:docker:chromium": "cross-env BASE_URL=http://localhost:4173 playwright test --project=chromium-desktop"
+    "test:e2e:docker:chromium": "cross-env BASE_URL=http://localhost:4173 playwright test --project=chromium-desktop",
+    "test:api": "playwright test --project=api"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.0",

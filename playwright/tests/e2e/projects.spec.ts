@@ -74,7 +74,7 @@ test.describe('Projects', () => {
   })
 
   test.describe('Custom Project Creation — successful flow', () => {
-    test('creates project and verifies it appears in the list', async ({ loggedInPage: page }) => {
+    test('creates project and verifies it appears in the list', { tag: '@smoke' }, async ({ loggedInPage: page }) => {
       const projectsPage = new ProjectsPage(page)
       const form         = new NewProjectPage(page)
       const name         = 'New Test Project'

@@ -15,8 +15,32 @@ on:
     - cron: '0 6 * * *'
 
 jobs:
+  smoke:
+    name: Smoke gate
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-noble
+      options: --user root
+    env:
+      HOME: /root
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+
+      - name: Run smoke tests
+        run: npx playwright test --project=chromium-desktop --project=api --grep @smoke
+
   desktop:
     name: Desktop — ${{ matrix.project }}
+    needs: smoke
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.60.0-noble
@@ -56,6 +80,7 @@ jobs:
 
   mobile:
     name: Mobile — ${{ matrix.project }}
+    needs: smoke
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.60.0-noble
@@ -96,7 +121,7 @@ jobs:
   # ── Publish ──────────────────────────────────────────────────────────────────
   publish:
     name: Merge reports and publish to GitHub Pages
-    needs: [desktop, mobile]
+    needs: [smoke, desktop, mobile]
     if: always()
     runs-on: ubuntu-latest
 

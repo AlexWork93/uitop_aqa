@@ -2,7 +2,7 @@ import { expect } from '@playwright/test'
 import { test } from '../../fixtures'
 
 test.describe('Products API', () => {
-  test('GET /api/productsList returns 200 with a non-empty product list', async ({ apiClient }) => {
+  test('GET /api/productsList returns 200 with a non-empty product list', { tag: '@smoke' }, async ({ apiClient }) => {
     const body = await apiClient.getProducts()
 
     expect(body.responseCode).toBe(200)
@@ -15,7 +15,7 @@ test.describe('Products API', () => {
     expect(first).toHaveProperty('price')
   })
 
-  test('POST /api/productsList returns 405 — method not supported', async ({ apiClient }) => {
+  test('POST /api/productsList returns 405 — method not supported', { tag: '@smoke' }, async ({ apiClient }) => {
     const body = await apiClient.postProducts()
 
     expect(body.responseCode).toBe(405)
