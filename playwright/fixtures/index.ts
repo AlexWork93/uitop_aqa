@@ -4,6 +4,7 @@ import { LoginPage } from '../pages/LoginPage'
 import { DashboardPage } from '../pages/DashboardPage'
 import { credentials } from '../test-data/constants'
 import { clearLocalStorageOnLoad } from '../utils/storage'
+import { collectPageErrors, attachPageErrors } from '../utils/errors'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Custom Fixtures
@@ -12,9 +13,22 @@ import { clearLocalStorageOnLoad } from '../utils/storage'
 export type Fixtures = {
   apiClient:    AEClient
   loggedInPage: Page
+  _pageErrors:  void
 }
 
 export const test = base.extend<Fixtures>({
+
+  // ── _pageErrors (auto) ─────────────────────────────────────────────────────
+  // Automatically attaches console and network errors to every test's report.
+  // No test needs to declare this — { auto: true } makes it run for all tests
+  // that import from this fixture file.
+  _pageErrors: [async ({ page }, use, testInfo) => {
+    const errors = collectPageErrors(page)
+
+    await use()
+
+    await attachPageErrors(errors, testInfo)
+  }, { auto: true }],
 
   // ── apiClient ──────────────────────────────────────────────────────────────
   apiClient: async ({ request }, use) => {

@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test } from '../../fixtures'
 import { LoginPage } from '../../pages/LoginPage'
 import { DashboardPage } from '../../pages/DashboardPage'
 import { credentials, loginErrors } from '../../test-data/constants'
@@ -15,7 +15,11 @@ test.describe('Sign In', () => {
     await loginPage.goto()
   })
 
-  test('valid credentials sign in and land on dashboard', async () => {
+  test('app opens on the sign-in page', { tag: '@smoke' }, async () => {
+    await loginPage.expectLoginPageVisible()
+  })
+
+  test('valid credentials sign in and land on dashboard', { tag: '@smoke' }, async () => {
     await loginPage.login(credentials.email, credentials.password)
 
     await dashboard.expectDashboardVisible()

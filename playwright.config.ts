@@ -6,10 +6,17 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [
-    ['list'],
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-  ],
+  reporter: process.env.CI
+    ? [
+        ['list'],
+        // Blob reporter outputs raw data that can be merged across matrix jobs.
+        // The publish job collects all blobs and merges them into one HTML report.
+        ['blob', { outputDir: 'blob-report' }],
+      ]
+    : [
+        ['list'],
+        ['html', { outputFolder: 'playwright-report', open: 'never' }],
+      ],
   use: {
     // BASE_URL is set by docker-compose so the runner can reach the app container.
     // Falls back to the local preview server when running outside Docker.
@@ -27,13 +34,6 @@ export default defineConfig({
         reuseExistingServer: !process.env.CI,
       },
   projects: [
-    // ── Smoke — fast sanity check, Chromium only ──────────────────────────────
-    {
-      name: 'smoke',
-      testMatch: /playwright\/tests\/e2e\/app\.spec\.ts/,
-      use: { ...devices['Desktop Chrome'] },
-    },
-
     // ── Desktop browsers ──────────────────────────────────────────────────────
     {
       name: 'chromium-desktop',
